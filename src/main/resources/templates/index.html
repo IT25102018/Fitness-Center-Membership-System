@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Fitness Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div class="layout">
+
+    <!-- Sidebar (same as layout.html) -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">🏋️</div>
+            <div>
+                <div class="brand-name">FitCenter</div>
+                <div class="brand-sub">Management System</div>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Main</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/}" class="active">
+                    <span class="nav-icon">🏠</span><span>Dashboard</span></a></li>
+            </ul>
+        </div>
+        <div class="sidebar-section" th:if="${isAdmin}">
+            <div class="sidebar-section-label">Members</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/user/list}">
+                    <span class="nav-icon">👥</span><span>Users</span></a></li>
+                <li><a th:href="@{/plan/list}">
+                    <span class="nav-icon">💳</span><span>Membership Plans</span></a></li>
+                <li><a th:href="@{/payment/admin/list}">
+                    <span class="nav-icon">💰</span><span>Payments</span></a></li>
+                <li><a th:href="@{/payment/admin/invoices}">
+                    <span class="nav-icon">🧾</span><span>Invoices</span></a></li>
+            </ul>
+        </div>
+        <div class="sidebar-section" th:if="${isAdmin}">
+            <div class="sidebar-section-label">Fitness</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/trainer/list}">
+                    <span class="nav-icon">🏅</span><span>Trainers</span></a></li>
+                <li><a th:href="@{/equipment/list}">
+                    <span class="nav-icon">🔧</span><span>Equipment</span></a></li>
+                <li><a th:href="@{/booking/admin/classes}">
+                    <span class="nav-icon">📅</span><span>Classes</span></a></li>
+                <li><a th:href="@{/booking/admin/bookings}">
+                    <span class="nav-icon">🎫</span><span>Bookings</span></a></li>
+            </ul>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Account</div>
+            <ul class="sidebar-nav">
+                <li th:if="${isUser}"><a th:href="@{/booking/classes}">
+                    <span class="nav-icon">📋</span><span>Book a Class</span></a></li>
+                <li th:if="${isUser}"><a th:href="@{/payment/make}">
+                    <span class="nav-icon">➕</span><span>Make Payment</span></a></li>
+                <li th:if="${isUser}"><a th:href="@{/payment/my/invoices}">
+                    <span class="nav-icon">🧾</span><span>My Invoices</span></a></li>
+                <li><a th:href="@{/user/logout}">
+                    <span class="nav-icon">🚪</span><span>Logout</span></a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="user-avatar"
+                     th:text="${session.loggedUser != null}
+                               ? ${session.loggedUser.username.substring(0,1).toUpperCase()}
+                               : 'G'">
+                </div>
+                <div class="user-info">
+                    <div class="user-name"
+                         th:text="${session.loggedUser != null}
+                                   ? ${session.loggedUser.username} : 'Guest'">
+                    </div>
+                    <div class="user-role"
+                         th:text="${session.loggedUser != null}
+                                   ? ${session.loggedUser.role} : ''">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-wrapper">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="page-title">Dashboard</div>
+                <div class="breadcrumb-text">Welcome back 👋</div>
+            </div>
+            <div class="topbar-right">
+                <span class="topbar-badge"
+                      th:if="${userRole != null}"
+                      th:text="${userRole}">
+                </span>
+                <a th:href="@{/user/logout}">
+                    <button class="topbar-logout">Logout</button>
+                </a>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="page-content">
+
+            <!-- Welcome Banner -->
+            <div class="p-4 mb-4 rounded-3"
+                 style="background: linear-gradient(120deg,#1a56db,#1e2a3a);
+                        color:#fff;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="fw-700 mb-1">
+                            🏋️ Fitness Center Management System
+                        </h4>
+                        <p style="opacity:.8; font-size:13px; margin:0;">
+                            Manage members, trainers, equipment, classes and payments
+                            all in one place.
+                        </p>
+                    </div>
+                    <div style="font-size:60px; opacity:0.15;">🏋️</div>
+                </div>
+            </div>
+
+            <!-- User Profile (For USER role) -->
+            <div class="row g-3 mb-4" th:if="${isUser}">
+                <div class="col-md-12">
+                    <div class="card shadow-sm border-0" style="border-left:4px solid #1a56db !important;">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4" style="color:var(--text-main);">👤 My Profile Details</h5>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 text-muted">Username</div>
+                                <div class="col-sm-9 fw-500" th:text="${session.loggedUser.username}"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 text-muted">Email Address</div>
+                                <div class="col-sm-9 fw-500" th:text="${session.loggedUser.email}"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 text-muted">Phone Number</div>
+                                <div class="col-sm-9 fw-500" th:text="${session.loggedUser.phone}"></div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-3 text-muted">Membership Plan</div>
+                                <div class="col-sm-9">
+                                    <span class="badge bg-primary px-3 py-2" th:text="${session.loggedUser.membershipType}"></span>
+                                </div>
+                            </div>
+                            <a th:href="@{/user/profile/{id}(id=${session.loggedUser.userId})}" class="btn btn-outline-primary">
+                                View / Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-4">
+                    <div class="card shadow-sm border-0" style="border-left:4px solid #057a55 !important;">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4" style="color:var(--text-main);">🧾 Recent Invoices</h5>
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>Plan</th>
+                                    <th>Total (Rs.)</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${#lists.isEmpty(userInvoices)}">
+                                    <td colspan="6" class="text-center text-muted">No invoices found.</td>
+                                </tr>
+                                <tr th:each="inv : ${userInvoices}">
+                                    <td th:text="${inv.invoiceId}"></td>
+                                    <td th:text="${inv.planName}"></td>
+                                    <td class="fw-bold" th:text="${inv.totalAmount}"></td>
+                                    <td th:text="${inv.invoiceDate}"></td>
+                                    <td>
+                                        <span th:if="${inv.invoiceStatus == 'ISSUED'}" class="badge bg-primary">Issued</span>
+                                        <span th:if="${inv.invoiceStatus == 'PAID'}" class="badge bg-success">Paid</span>
+                                        <span th:if="${inv.invoiceStatus == 'CANCELLED'}" class="badge bg-danger">Cancelled</span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/payment/invoice/{id}(id=${inv.invoiceId})}" class="btn btn-sm btn-outline-secondary">View</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ADMIN: System Overview ───────────────────────── -->
+            <th:block th:if="${isAdmin}">
+            <h6 class="admin-section-label">📊 System Overview</h6>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4 col-lg-2">
+                    <a th:href="@{/user/list}" style="text-decoration:none">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">👥</div>
+                            <div>
+                                <div class="stat-value"
+                                     th:text="${totalUsers != null ? totalUsers : '—'}">
+                                </div>
+                                <div class="stat-label">Members</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <a th:href="@{/trainer/list}" style="text-decoration:none">
+                        <div class="stat-card">
+                            <div class="stat-icon green">🏅</div>
+                            <div>
+                                <div class="stat-value"
+                                     th:text="${totalTrainers != null ? totalTrainers : '—'}">
+                                </div>
+                                <div class="stat-label">Trainers</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <a th:href="@{/equipment/list}" style="text-decoration:none">
+                        <div class="stat-card">
+                            <div class="stat-icon orange">🔧</div>
+                            <div>
+                                <div class="stat-value"
+                                     th:text="${totalEquipment != null ? totalEquipment : '—'}">
+                                </div>
+                                <div class="stat-label">Equipment</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <a th:href="@{/booking/admin/classes}" style="text-decoration:none">
+                        <div class="stat-card">
+                            <div class="stat-icon purple">📅</div>
+                            <div>
+                                <div class="stat-value"
+                                     th:text="${totalClasses != null ? totalClasses : '—'}">
+                                </div>
+                                <div class="stat-label">Classes</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <a th:href="@{/booking/admin/bookings}" style="text-decoration:none">
+                        <div class="stat-card">
+                            <div class="stat-icon teal">🎫</div>
+                            <div>
+                                <div class="stat-value"
+                                     th:text="${totalBookings != null ? totalBookings : '—'}">
+                                </div>
+                                <div class="stat-label">Bookings</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <a th:href="@{/payment/admin/list}" style="text-decoration:none">
+                        <div class="stat-card">
+                            <div class="stat-icon red">💰</div>
+                            <div>
+                                <div class="stat-value"
+                                     th:text="${totalRevenue != null ? 'Rs.' + totalRevenue : '—'}">
+                                </div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            </th:block>
+
+            <!-- Quick Links Grid -->
+            <th:block th:if="${isAdmin}">
+            <h6 class="admin-section-label">⚡ Quick Actions</h6>
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a th:href="@{/user/register}" class="quick-link-card ql-blue">
+                        <span class="ql-icon">➕</span>
+                        <div class="ql-title">Add Member</div>
+                        <div class="ql-sub">Register new user</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a th:href="@{/plan/add}" class="quick-link-card ql-green">
+                        <span class="ql-icon">💳</span>
+                        <div class="ql-title">Add Plan</div>
+                        <div class="ql-sub">New membership plan</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a th:href="@{/trainer/add}" class="quick-link-card ql-amber">
+                        <span class="ql-icon">🏅</span>
+                        <div class="ql-title">Add Trainer</div>
+                        <div class="ql-sub">Register trainer</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a th:href="@{/equipment/add}" class="quick-link-card ql-purple">
+                        <span class="ql-icon">🔧</span>
+                        <div class="ql-title">Add Equipment</div>
+                        <div class="ql-sub">Log new equipment</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a th:href="@{/booking/admin/add}" class="quick-link-card ql-teal">
+                        <span class="ql-icon">📅</span>
+                        <div class="ql-title">Add Class</div>
+                        <div class="ql-sub">Schedule a session</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a th:href="@{/payment/make}" class="quick-link-card ql-red">
+                        <span class="ql-icon">💰</span>
+                        <div class="ql-title">Take Payment</div>
+                        <div class="ql-sub">Record a payment</div>
+                    </a>
+                </div>
+            </div>
+            </th:block>
+
+            <!-- Module Summary Cards -->
+            <th:block th:if="${isAdmin}">
+            <h6 class="admin-section-label">📦 All Modules</h6>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100" style="border-left:4px solid #1a56db;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span style="font-size:28px;">👥</span>
+                                <div>
+                                    <div class="fw-700">User Management</div>
+                                    <div class="module-card-count">
+                                        <span th:text="${totalUsers} + ' Members'">— Members</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-3" style="font-size:12px;">
+                                Register, search, update and delete member accounts.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/user/list}"
+                                   class="btn btn-sm btn-primary">View Members</a>
+                                <a th:href="@{/user/register}"
+                                   class="btn btn-sm btn-outline-primary">+ Add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100" style="border-left:4px solid #057a55;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span style="font-size:28px;">💳</span>
+                                <div>
+                                    <div class="fw-700">Membership Plans</div>
+                                    <div class="module-card-count">
+                                        <span th:text="${totalPlans} + ' Plans'">— Plans</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-3" style="font-size:12px;">
+                                Create and manage Basic, Premium and VIP plans.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/plan/list}"
+                                   class="btn btn-sm btn-success">View Plans</a>
+                                <a th:href="@{/plan/add}"
+                                   class="btn btn-sm btn-outline-success">+ Add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100" style="border-left:4px solid #c27803;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span style="font-size:28px;">🏅</span>
+                                <div>
+                                    <div class="fw-700">Trainer Management</div>
+                                    <div class="module-card-count">
+                                        <span th:text="${totalTrainers} + ' Trainers'">— Trainers</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-3" style="font-size:12px;">
+                                Manage full-time and part-time fitness trainers.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/trainer/list}"
+                                   class="btn btn-sm btn-warning">View Trainers</a>
+                                <a th:href="@{/trainer/add}"
+                                   class="btn btn-sm btn-outline-warning">+ Add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100" style="border-left:4px solid #7c3aed;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span style="font-size:28px;">🔧</span>
+                                <div>
+                                    <div class="fw-700">Equipment Management</div>
+                                    <div class="module-card-count">
+                                        <span th:text="${totalEquipment} + ' Items'">— Items</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-3" style="font-size:12px;">
+                                Track gym equipment condition, status and value.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/equipment/list}"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    View Equipment
+                                </a>
+                                <a th:href="@{/equipment/add}"
+                                   class="btn btn-sm btn-outline-secondary">+ Add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100" style="border-left:4px solid #0891b2;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span style="font-size:28px;">📅</span>
+                                <div>
+                                    <div class="fw-700">Class Bookings</div>
+                                    <div class="module-card-count">
+                                        <span th:text="${totalClasses} + ' Classes'">— Classes</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-3" style="font-size:12px;">
+                                Schedule classes, manage bookings and attendance.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/booking/admin/classes}"
+                                   class="btn btn-sm btn-info text-white">
+                                    View Classes
+                                </a>
+                                <a th:href="@{/booking/admin/add}"
+                                   class="btn btn-sm btn-outline-info">+ Add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100" style="border-left:4px solid #c81e1e;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span style="font-size:28px;">💰</span>
+                                <div>
+                                    <div class="fw-700">Payments &amp; Invoices</div>
+                                    <div class="module-card-count">
+                                        <span th:text="'Rs. ' + ${totalRevenue} + ' Revenue'">— Revenue</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-3" style="font-size:12px;">
+                                Process payments and auto-generate invoices with
+                                tax and discounts.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/payment/admin/list}"
+                                   class="btn btn-sm btn-danger">
+                                    View Payments
+                                </a>
+                                <a th:href="@{/payment/make}"
+                                   class="btn btn-sm btn-outline-danger">+ Pay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </th:block>
+
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
