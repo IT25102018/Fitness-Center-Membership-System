@@ -1,4 +1,4 @@
-package service;
+package com.fitness.fitnesscentersystem.service;
 
 import com.fitness.fitnesscentersystem.model.User;
 import com.fitness.fitnesscentersystem.util.FileUtil;

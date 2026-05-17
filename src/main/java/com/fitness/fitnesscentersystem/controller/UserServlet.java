@@ -1,4 +1,4 @@
-package controller;
+package com.fitness.fitnesscentersystem.controller;
 
 import com.fitness.fitnesscentersystem.model.User;
 import com.fitness.fitnesscentersystem.service.UserService;

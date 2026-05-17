@@ -1,4 +1,4 @@
-package model;
+package com.fitness.fitnesscentersystem.model;
 
 public class AdminUser extends User {
 
