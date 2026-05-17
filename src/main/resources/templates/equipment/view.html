@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Equipment Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4" style="max-width:560px">
+    <h2 class="mb-4">🔧 Equipment Details</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0" th:text="${equipment.name}"></h5>
+            <span th:if="${equipment.status == 'AVAILABLE'}"
+                  class="badge bg-success">Available</span>
+            <span th:if="${equipment.status == 'IN_USE'}"
+                  class="badge bg-primary">In Use</span>
+            <span th:if="${equipment.status == 'UNDER_MAINTENANCE'}"
+                  class="badge bg-danger">Maintenance</span>
+        </div>
+        <div class="card-body">
+            <p><strong>Equipment ID:</strong>
+                <span th:text="${equipment.equipmentId}"></span></p>
+            <p><strong>Category:</strong>
+                <span th:text="${equipment.category}"></span></p>
+            <p><strong>Brand:</strong>
+                <span th:text="${equipment.brand}"></span></p>
+            <p><strong>Quantity:</strong>
+                <span th:text="${equipment.quantity}"></span></p>
+            <p><strong>Purchase Price:</strong>
+                Rs. <span th:text="${equipment.purchasePrice}"></span></p>
+            <p><strong>Purchase Date:</strong>
+                <span th:text="${equipment.purchaseDate}"></span></p>
+            <p><strong>Condition:</strong>
+                <span th:text="${equipment.condition}"
+                      th:class="${equipment.condition == 'EXCELLENT'} ? 'text-success fw-bold'
+                               : (${equipment.condition == 'GOOD'} ? 'text-primary'
+                               : (${equipment.condition == 'FAIR'} ? 'text-warning'
+                               : 'text-danger fw-bold'))">
+               </span></p>
+        </div>
+
+        <!-- Quick Status Update -->
+        <div class="card-footer">
+            <p class="mb-2"><strong>Update Status:</strong></p>
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <form th:action="@{/equipment/status/{id}(id=${equipment.equipmentId})}"
+                      method="post">
+                    <input type="hidden" name="newStatus" value="AVAILABLE">
+                    <button class="btn btn-sm btn-success">Mark Available</button>
+                </form>
+                <form th:action="@{/equipment/status/{id}(id=${equipment.equipmentId})}"
+                      method="post">
+                    <input type="hidden" name="newStatus" value="IN_USE">
+                    <button class="btn btn-sm btn-primary">Mark In Use</button>
+                </form>
+                <form th:action="@{/equipment/status/{id}(id=${equipment.equipmentId})}"
+                      method="post">
+                    <input type="hidden" name="newStatus" value="UNDER_MAINTENANCE">
+                    <button class="btn btn-sm btn-danger">Send to Maintenance</button>
+                </form>
+            </div>
+            <a th:href="@{/equipment/edit/{id}(id=${equipment.equipmentId})}"
+               class="btn btn-outline-primary">Edit</a>
+            <a th:href="@{/equipment/list}"
+               class="btn btn-outline-secondary ms-2">Back to List</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
