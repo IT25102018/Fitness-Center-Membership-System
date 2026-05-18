@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public class UserService {
 
-    private static final String FILE_PATH = "src/main/resources/data/users.txt.txt";
+    private static final String FILE_PATH = "src/main/resources/data/users.txt";
 
     // CREATE — Register a new user
     public boolean registerUser(User user) {
         if (findByUsername(user.getUsername()) != null) {
-            return false; // Username already exists
+            return false; // Username already exists (Username Validation)
         }
         user.setUserId(UUID.randomUUID().toString().substring(0, 8));
         user.setRole("USER");
@@ -24,7 +24,7 @@ public class UserService {
         return true;
     }
 
-    // READ — Get all users.txt
+    // READ — Get all users
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         for (String line : FileUtil.readLines(FILE_PATH)) {
