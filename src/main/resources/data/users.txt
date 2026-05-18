@@ -1,5 +1,0 @@
-u001,john_doe,Pathum123,john@email.com,0771234567,PREMIUM,USER
-u002,jane_smith,abc456,jane@email.com,0777654321,VIP,USER
-u003,admin,admin123,admin@fitness.com,0700000000,N/A,ADMIN
-c78d46c1,Pathum,Pathum12345,pathum@gmail.com,011274859,BASIC,USER
-4234aad2,bemal,bemal123,bemal@email.com,0123456,BASIC,USER
