@@ -1,0 +1,6 @@
+CLS-001|Morning Yoga|TRN-001|Kasun Perera|MON-WED-FRI 07:00|60 mins|15|10|GROUP|ACTIVE
+CLS-002|Power Cardio|TRN-002|Nimal Silva|TUE-THU 09:00|45 mins|20|15|GROUP|ACTIVE
+CLS-003|Zumba Blast|TRN-004|Ruwan Bandara|SAT 10:00|60 mins|25|10|GROUP|ACTIVE
+CLS-004|Personal Training|TRN-002|Nimal Silva|MON 14:00|60 mins|1|0|PERSONAL|ACTIVE
+CLS-005|Pilates Core|TRN-005|Dilani Jayawardena|WED-FRI 08:00|50 mins|12|12|GROUP|ACTIVE
+CLS-006|Evening Stretch|TRN-001|Kasun Perera|MON-WED-FRI 18:00|30 mins|20|6|GROUP|ACTIVE
