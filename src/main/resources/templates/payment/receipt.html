@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Receipt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        .receipt-box {
+            border: 2px solid #198754;
+            border-radius: 12px;
+            padding: 28px;
+            background: #fff;
+            max-width: 520px;
+            margin: auto;
+        }
+        .divider { border-top: 1px dashed #ccc; margin: 12px 0; }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+    <div class="receipt-box shadow">
+
+        <div class="text-center mb-3">
+            <h4 class="text-success">✅ Payment Successful!</h4>
+            <p class="text-muted mb-0">Fitness Center Membership System</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Payment Details -->
+        <h6 class="text-muted">Payment Details</h6>
+        <table class="table table-sm table-borderless">
+            <tr>
+                <td><strong>Payment ID</strong></td>
+                <td th:text="${payment.paymentId}"></td>
+            </tr>
+            <tr>
+                <td><strong>Member</strong></td>
+                <td th:text="${payment.username}"></td>
+            </tr>
+            <tr>
+                <td><strong>Plan</strong></td>
+                <td th:text="${payment.planName}"></td>
+            </tr>
+            <tr>
+                <td><strong>Method</strong></td>
+                <td th:text="${payment.paymentMethod}"></td>
+            </tr>
+            <tr>
+                <td><strong>Date</strong></td>
+                <td th:text="${payment.paymentDate}"></td>
+            </tr>
+        </table>
+
+        <div class="divider"></div>
+
+        <!-- Invoice Breakdown -->
+        <h6 class="text-muted">Invoice Breakdown</h6>
+        <table class="table table-sm table-borderless">
+            <tr>
+                <td>Subtotal</td>
+                <td class="text-end">
+                    Rs. <span th:text="${invoice.subtotal}"></span>
+                </td>
+            </tr>
+            <tr class="text-success">
+                <td>Discount</td>
+                <td class="text-end">
+                    - Rs. <span th:text="${invoice.discountAmount}"></span>
+                </td>
+            </tr>
+            <tr class="text-muted">
+                <td>Tax (8%)</td>
+                <td class="text-end">
+                    + Rs. <span th:text="${invoice.taxAmount}"></span>
+                </td>
+            </tr>
+            <tr class="fw-bold border-top">
+                <td>Total</td>
+                <td class="text-end text-success fs-5">
+                    Rs. <span th:text="${invoice.totalAmount}"></span>
+                </td>
+            </tr>
+        </table>
+
+        <p class="text-muted small text-center mb-3">
+            Invoice ID: <span th:text="${invoice.invoiceId}"></span>
+        </p>
+
+        <div class="d-flex gap-2">
+            <a th:href="@{/payment/invoice/{id}(id=${invoice.invoiceId})}"
+               class="btn btn-outline-success w-50">View Invoice</a>
+            <a th:href="@{/payment/my}"
+               class="btn btn-outline-secondary w-50">My Payments</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
