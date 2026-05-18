@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Make Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4" style="max-width:560px">
+    <h2 class="mb-4">💳 Make a Payment</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/payment/make}" method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Select Membership Plan</label>
+            <select name="planId" class="form-select" required>
+                <option value="">-- Choose a Plan --</option>
+                <option th:each="p : ${plans}"
+                        th:value="${p.planId}"
+                        th:text="${p.planName + ' — Rs. ' + p.price
+                                  + ' (' + p.durationMonths + ' month/s)'}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Payment Method</label>
+            <select name="paymentMethod" class="form-select" required>
+                <option value="">-- Select --</option>
+                <option value="CASH">Cash</option>
+                <option value="CARD">Card</option>
+                <option value="BANK_TRANSFER">Bank Transfer</option>
+                <option value="ONLINE">Online Payment</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Remarks (optional)</label>
+            <input type="text" name="remarks" class="form-control"
+                   placeholder="e.g. Paid at front desk">
+        </div>
+
+        <div class="alert alert-info py-2">
+            <small>
+                💡 A discount of <strong>10%</strong> applies for VIP members
+                and <strong>5%</strong> for Premium members.
+                An 8% tax will be added to your invoice.
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">
+            Confirm & Pay
+        </button>
+        <a th:href="@{/payment/my}"
+           class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
