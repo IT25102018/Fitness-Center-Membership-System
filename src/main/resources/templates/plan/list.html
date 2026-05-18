@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Membership Plans</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>💳 Membership Plans</h2>
+            <a th:href="@{/plan/add}" class="btn btn-success">+ Add New Plan</a>
+        </div>
+
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+        <!-- Price Filter -->
+        <form th:action="@{/plan/search}" method="get" class="row g-2 mb-3">
+            <div class="col-auto">
+                <input type="number" name="min" class="form-control" placeholder="Min Price (Rs.)" th:value="${min}"
+                    step="0.01">
+            </div>
+            <div class="col-auto">
+                <input type="number" name="max" class="form-control" placeholder="Max Price (Rs.)" th:value="${max}"
+                    step="0.01">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary">Filter</button>
+                <a th:href="@{/plan/list}" class="btn btn-outline-secondary ms-1">Reset</a>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Plan ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price (Rs.)</th>
+                    <th>Duration</th>
+                    <th>Features</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(plans)}">
+                    <td colspan="7" class="text-center text-muted">No plans found.</td>
+                </tr>
+                <tr th:each="p : ${plans}">
+                    <td th:text="${p.planId}"></td>
+                    <td>
+                        <span th:text="${p.planName}" class="fw-bold"></span>
+                        <span th:if="${p.planName == 'VIP'}" class="badge bg-warning text-dark ms-1">★ VIP</span>
+                        <span th:if="${p.planName == 'PREMIUM'}" class="badge bg-primary ms-1">Premium</span>
+                    </td>
+                    <td th:text="${p.description}"></td>
+                    <td th:text="${'Rs. ' + p.price}"></td>
+                    <td th:text="${p.durationMonths + ' month(s)'}"></td>
+                    <td th:text="${p.features}"></td>
+                    <td>
+                        <a th:href="@{/plan/view/{id}(id=${p.planId})}" class="btn btn-sm btn-outline-info">View</a>
+                        <a th:href="@{/plan/edit/{id}(id=${p.planId})}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <form th:action="@{/plan/delete/{id}(id=${p.planId})}" method="post" style="display:inline">
+                            <button class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Delete this plan?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{/}" class="btn btn-secondary">← Back</a>
+    </div>
+</body>
+
+</html>

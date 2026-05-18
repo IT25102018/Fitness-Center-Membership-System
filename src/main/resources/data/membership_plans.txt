@@ -1,0 +1,3 @@
+PLN-001|BASIC|Entry level gym access|2500.00|1|Gym Access,Locker Room
+PLN-002|PREMIUM|Full access with classes|5500.00|3|Gym Access,Pool,Group Classes,Locker Room
+PLN-003|VIP|All-inclusive luxury membership|12000.00|6|Gym Access,Pool,Sauna,Personal Trainer,Guest Passes,Locker Room

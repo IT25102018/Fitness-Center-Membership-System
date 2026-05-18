@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Plan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4" style="max-width:550px">
+    <h2 class="mb-4">➕ Add Membership Plan</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/plan/add}" th:object="${plan}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Plan Name</label>
+            <select class="form-select" th:field="*{planName}" required>
+                <option value="">-- Select --</option>
+                <option value="BASIC">Basic</option>
+                <option value="PREMIUM">Premium</option>
+                <option value="VIP">VIP</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" th:field="*{description}" rows="2"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Price (Rs.)</label>
+            <input type="number" class="form-control" th:field="*{price}"
+                   step="0.01" min="0" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Duration (Months)</label>
+            <input type="number" class="form-control" th:field="*{durationMonths}"
+                   min="1" max="24" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Features</label>
+            <input type="text" class="form-control" th:field="*{features}"
+                   placeholder="e.g. Pool Access, Gym, Sauna">
+        </div>
+        <button type="submit" class="btn btn-success w-100">Add Plan</button>
+        <a th:href="@{/plan/list}" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
