@@ -12,11 +12,17 @@
 
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0" th:text="${trainer.name}"></h5>
-            <span th:if="${trainer.status == 'ACTIVE'}"
-                  class="badge bg-success">ACTIVE</span>
-            <span th:if="${trainer.status == 'INACTIVE'}"
-                  class="badge bg-secondary">INACTIVE</span>
+            <h5 class="mb-0">
+                <span th:text="${trainer.name}"></span>
+                <span th:if="${trainer.trainerType == 'FULL_TIME'}" class="badge bg-primary ms-2 fs-6">Full-Time</span>
+                <span th:if="${trainer.trainerType == 'PART_TIME'}" class="badge bg-info text-dark ms-2 fs-6">Part-Time</span>
+            </h5>
+            <div>
+                <span th:if="${trainer.status == 'ACTIVE'}"
+                      class="badge bg-success">ACTIVE</span>
+                <span th:if="${trainer.status == 'INACTIVE'}"
+                      class="badge bg-secondary">INACTIVE</span>
+            </div>
         </div>
         <div class="card-body">
             <p><strong>Trainer ID:</strong>
@@ -29,8 +35,24 @@
                 <span th:text="${trainer.specialization}"></span></p>
             <p><strong>Availability:</strong>
                 <span th:text="${trainer.availability}"></span></p>
-            <p><strong>Monthly Salary:</strong>
-                Rs. <span th:text="${trainer.salary}"></span></p>
+
+            <hr th:if="${trainer.trainerType == 'FULL_TIME' or trainer.trainerType == 'PART_TIME'}">
+
+            <div th:if="${trainer.trainerType == 'FULL_TIME'}">
+                <p><strong>Department:</strong> <span th:text="${trainer.department}"></span></p>
+                <p><strong>Contract Start:</strong> <span th:text="${trainer.contractStartDate}"></span></p>
+                <p><strong>Annual Leave Days:</strong> <span th:text="${trainer.annualLeaveDays}"></span></p>
+                <p><strong>Monthly Salary:</strong> Rs. <span th:text="${trainer.salary}"></span></p>
+            </div>
+
+            <div th:if="${trainer.trainerType == 'PART_TIME'}">
+                <p><strong>Hours Per Week:</strong> <span th:text="${trainer.hoursPerWeek}"></span></p>
+                <p><strong>Hourly Rate:</strong> Rs. <span th:text="${trainer.hourlyRate}"></span> / hr</p>
+            </div>
+
+            <div th:if="${trainer.trainerType != 'FULL_TIME' and trainer.trainerType != 'PART_TIME'}">
+                <p><strong>Monthly Salary:</strong> Rs. <span th:text="${trainer.salary}"></span></p>
+            </div>
         </div>
         <div class="card-footer d-flex gap-2">
             <a th:href="@{/trainer/edit/{id}(id=${trainer.trainerId})}"
