@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Class</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4" style="max-width:580px">
+  <h2 class="mb-4">✏️ Edit Class</h2>
+
+  <form th:action="@{/booking/admin/edit}"
+        th:object="${fitnessClass}" method="post">
+    <input type="hidden" th:field="*{classId}">
+    <input type="hidden" th:field="*{enrolledCount}">
+
+    <div class="mb-3">
+      <label class="form-label">Class Name</label>
+      <input type="text" class="form-control" th:field="*{className}" required>
+    </div>
+    <div class="row">
+      <div class="col mb-3">
+        <label class="form-label">Trainer ID</label>
+        <input type="text" class="form-control" th:field="*{trainerId}">
+      </div>
+      <div class="col mb-3">
+        <label class="form-label">Trainer Name</label>
+        <input type="text" class="form-control" th:field="*{trainerName}">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Schedule</label>
+      <input type="text" class="form-control" th:field="*{schedule}">
+    </div>
+    <div class="row">
+      <div class="col mb-3">
+        <label class="form-label">Duration</label>
+        <input type="text" class="form-control" th:field="*{duration}">
+      </div>
+      <div class="col mb-3">
+        <label class="form-label">Max Capacity</label>
+        <input type="number" class="form-control" th:field="*{maxCapacity}" min="1">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Class Type</label>
+      <select class="form-select" th:field="*{classType}">
+        <option value="GROUP">Group</option>
+        <option value="PERSONAL">Personal</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <select class="form-select" th:field="*{status}">
+        <option value="ACTIVE">Active</option>
+        <option value="CANCELLED">Cancelled</option>
+        <option value="COMPLETED">Completed</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Update Class</button>
+    <a th:href="@{/booking/admin/classes}"
+       class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+  </form>
+</div>
+</body>
+</html>
