@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        .invoice-box {
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 32px;
+            background: #fff;
+            max-width: 580px;
+            margin: auto;
+        }
+        .divider { border-top: 1px dashed #ccc; margin: 16px 0; }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+    <div class="invoice-box shadow-sm">
+
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+                <h4 class="mb-0">🧾 Invoice</h4>
+                <small class="text-muted"
+                       th:text="${invoice.invoiceId}"></small>
+            </div>
+            <div class="text-end">
+                <span th:if="${invoice.invoiceStatus == 'ISSUED'}"
+                      class="badge bg-primary fs-6">Issued</span>
+                <span th:if="${invoice.invoiceStatus == 'PAID'}"
+                      class="badge bg-success fs-6">Paid</span>
+                <span th:if="${invoice.invoiceStatus == 'CANCELLED'}"
+                      class="badge bg-danger fs-6">Cancelled</span>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <p class="mb-1"><strong>Member:</strong>
+                    <span th:text="${invoice.username}"></span></p>
+                <p class="mb-1"><strong>Plan:</strong>
+                    <span th:text="${invoice.planName}"></span></p>
+            </div>
+            <div class="col text-end">
+                <p class="mb-1"><strong>Invoice Date:</strong>
+                    <span th:text="${invoice.invoiceDate}"></span></p>
+                <p class="mb-1"><strong>Payment ID:</strong>
+                    <span th:text="${invoice.paymentId}"></span></p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <table class="table table-borderless table-sm">
+            <tbody>
+            <tr>
+                <td>Subtotal</td>
+                <td class="text-end">
+                    Rs. <span th:text="${invoice.subtotal}"></span>
+                </td>
+            </tr>
+            <tr class="text-success">
+                <td>Membership Discount</td>
+                <td class="text-end">
+                    - Rs. <span th:text="${invoice.discountAmount}"></span>
+                </td>
+            </tr>
+            <tr class="text-muted">
+                <td>Tax (8%)</td>
+                <td class="text-end">
+                    + Rs. <span th:text="${invoice.taxAmount}"></span>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="border-top fw-bold fs-5">
+                <td>Total Due</td>
+                <td class="text-end text-success">
+                    Rs. <span th:text="${invoice.totalAmount}"></span>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="divider"></div>
+
+        <p class="text-muted small text-center mb-3">
+            Thank you for your payment. This is a computer-generated invoice.
+        </p>
+
+        <div class="d-flex gap-2 justify-content-center">
+            <a th:href="@{/payment/my/invoices}"
+               class="btn btn-outline-secondary">← Back</a>
+            <button onclick="window.print()"
+                    class="btn btn-outline-primary">🖨️ Print</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
