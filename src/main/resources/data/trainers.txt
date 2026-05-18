@@ -1,4 +1,5 @@
-TRN-001|Kasun Perera|kasun@fitness.com|0771234567|Yoga|WEEKDAYS|55000.0|ACTIVE
-TRN-002|Nimal Silva|nimal@fitness.com|0779876543|Weightlifting|MON-WED-FRI|65000.0|ACTIVE
-TRN-003|Ayesha Fernando|ayesha@fitness.com|0712345678|Cardio|WEEKENDS|48000.0|ACTIVE
-TRN-004|Ruwan Bandara|ruwan@fitness.com|0756789012|Zumba|TUE-THU-SAT|42000.0|INACTIVE
+FULL_TIME|TRN-001|Kasun Perera|kasun@fitness.com|0771234567|Yoga|WEEKDAYS|55000.0|ACTIVE|null|0|null
+FULL_TIME|TRN-002|Nimal Silva|nimal@fitness.com|0779876543|Weightlifting|MON-WED-FRI|65000.0|ACTIVE|null|0|null
+FULL_TIME|TRN-003|Ayesha Fernando|ayesha@fitness.com|0712345678|Cardio|WEEKENDS|48000.0|ACTIVE|null|0|null
+FULL_TIME|TRN-004|Ruwan Bandara|ruwan@fitness.com|0756789012|Zumba|TUE-THU-SAT|42000.0|INACTIVE|null|0|null
+FULL_TIME|TRN-7D0F99|uhuhuga|fuufuawgifugwa@gmail.com|0545646545|Yoga|WEEKDAYS|510.98|ACTIVE|2026-05-18|1|jih

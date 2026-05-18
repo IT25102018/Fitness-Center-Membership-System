@@ -32,6 +32,16 @@ public class FullTimeTrainer extends Trainer {
     public String getDepartment()                             { return department; }
     public void   setDepartment(String department)            { this.department = department; }
 
+    @Override
+    public String getTrainerType() {
+        return "FULL_TIME";
+    }
+
+    @Override
+    public String toFileString() {
+        return super.toFileString() + "|" + contractStartDate + "|" + annualLeaveDays + "|" + department;
+    }
+
     // Polymorphism: override toString from Trainer
     @Override
     public String toString() {

@@ -26,6 +26,16 @@ public class PartTimeTrainer extends Trainer {
     public double getHourlyRate()               { return hourlyRate; }
     public void   setHourlyRate(double rate)    { this.hourlyRate = rate; }
 
+    @Override
+    public String getTrainerType() {
+        return "PART_TIME";
+    }
+
+    @Override
+    public String toFileString() {
+        return super.toFileString() + "|" + hoursPerWeek + "|" + hourlyRate;
+    }
+
     // Polymorphism: override toString from Trainer
     @Override
     public String toString() {
