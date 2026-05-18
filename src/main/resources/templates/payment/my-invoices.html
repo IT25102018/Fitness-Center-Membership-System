@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('My Invoices', ~{::section}, 'my-invoices')}">
+<body>
+<section>
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h5 class="fw-bold mb-1">🧾 My Invoices</h5>
+            <small class="text-muted">All invoices generated for your payments</small>
+        </div>
+        <a th:href="@{/payment/make}" class="btn btn-primary btn-sm">+ Make Payment</a>
+    </div>
+
+    <!-- Invoice Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="background: var(--sidebar-bg); color: var(--text-muted);">
+                <tr>
+                    <th class="px-4 py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Invoice ID</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Plan</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Subtotal (Rs.)</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Discount (Rs.)</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Tax (Rs.)</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Total (Rs.)</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Date</th>
+                    <th class="py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Status</th>
+                    <th class="pe-4 py-3" style="font-size:11px; text-transform:uppercase; letter-spacing:.05em;">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(invoices)}">
+                    <td colspan="9" class="text-center text-muted py-5">
+                        <div style="font-size:40px; margin-bottom:8px;">🧾</div>
+                        No invoices found. Make a payment to generate your first invoice.
+                    </td>
+                </tr>
+                <tr th:each="inv : ${invoices}">
+                    <td class="px-4">
+                        <span class="fw-500" style="color:var(--accent-blue);" th:text="${inv.invoiceId}"></span>
+                    </td>
+                    <td th:text="${inv.planName}"></td>
+                    <td th:text="${inv.subtotal}"></td>
+                    <td class="text-success" th:text="${inv.discountAmount}"></td>
+                    <td class="text-muted" th:text="${inv.taxAmount}"></td>
+                    <td class="fw-bold" th:text="${'Rs. ' + inv.totalAmount}"></td>
+                    <td th:text="${inv.invoiceDate}"></td>
+                    <td>
+                        <span th:if="${inv.invoiceStatus == 'ISSUED'}" class="badge bg-primary px-3 py-2">Issued</span>
+                        <span th:if="${inv.invoiceStatus == 'PAID'}"   class="badge bg-success px-3 py-2">Paid</span>
+                        <span th:if="${inv.invoiceStatus == 'CANCELLED'}" class="badge bg-danger px-3 py-2">Cancelled</span>
+                    </td>
+                    <td class="pe-4">
+                        <a th:href="@{/payment/invoice/{id}(id=${inv.invoiceId})}"
+                           class="btn btn-sm btn-outline-secondary">View</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>
